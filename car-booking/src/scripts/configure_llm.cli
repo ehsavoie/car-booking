@@ -1,0 +1,6 @@
+/subsystem=logging/logger=io.smallrye.llm:add(level=DEBUG)
+/subsystem=logging/logger=dev.langchain4j.mcp.client:add(level=DEBUG)
+/subsystem=logging/logger=dev.langchain4j.model.ollama:add(level=DEBUG)
+/subsystem=logging/logger=dev.langchain4j.service:add(level=DEBUG)
+/subsystem=logging/logger=dev.langchain4j.model.openai:add(level=DEBUG)
+/subsystem=logging/logger=org.wildfly.extension.ai:add(level=DEBUG)
