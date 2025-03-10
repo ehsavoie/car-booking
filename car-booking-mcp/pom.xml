@@ -163,6 +163,10 @@
                         </spaces>
                         <version>${version.wildfly.server}</version>
                          <suggest>true</suggest>
+                         <add-ons>
+                           <add-on>metrics</add-on>
+                           <add-on>health</add-on>
+                         </add-ons>
                     </discoverProvisioningInfo>
                     <name>ROOT.war</name>
                     <packagingScripts>
