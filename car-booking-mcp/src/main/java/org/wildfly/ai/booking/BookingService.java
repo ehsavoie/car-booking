@@ -1,6 +1,8 @@
 package org.wildfly.ai.booking;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +48,12 @@ public class BookingService {
             @ToolArg(description = "The surname of the customer") String surname) {
         log.info("DEMO: Calling Tool-getBookingDetails: " + bookingNumber + " and customer: " + name + " " + surname);
         return checkBookingExists(bookingNumber, name, surname);
+    }
+    
+    @Tool(description = "Get All bookings")
+    public Collection<Booking> getAllBookingDetails() {
+        log.info("DEMO: Calling Tool-getAllBookingDetails");
+        return BOOKINGS.values();
     }
 
     @Tool(description="Get all booking ids for a customer given his name and surname")
