@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.jboss.logging.Logger;
+import org.wildfly.mcp.api.Prompt;
+import org.wildfly.mcp.api.PromptArg;
+import org.wildfly.mcp.api.PromptMessage;
+import org.wildfly.mcp.api.TextContent;
 import org.wildfly.mcp.api.Tool;
 import org.wildfly.mcp.api.ToolArg;
 
@@ -78,5 +82,46 @@ public class BookingService {
         checkCancelPolicy(booking);
         booking.setCanceled(true);
         return booking;
+    }
+
+    @Prompt(name = "detect-fraud-for-customer", description = "Detect fraud for customer.")
+    public PromptMessage detectFraudForCustomer(@PromptArg(name = "name", 
+            description = "User name.", 
+            required=true) String name, 
+            @PromptArg(name = "surname", 
+            description = "User surname.", 
+            required=true) String surname) {
+        String prompt = """
+            Your task is to detect whether a fraud was committed for the customer {{name}} {{surname}}.
+
+            To detect a fraud, perform the following actions:
+            1 - Retrieve all bookings for the customer with name {{name}} and surname {{surname}}.
+            2 - If there are no bookings, return the fraud status as 'false'.
+            3 - Otherwise, Determine if there is an overlap between several bookings.
+            4 - If there is an overlap, a fraud is detected.
+            5 - If a fraud is detected, return the fraud status and the bookings that overlap.
+
+            A booking overlap (and hence a fraud) occurs when there are several bookings for a given date.
+            For instance:
+            -there is no overlap if a given customer has the following bookings:
+                    - Booking number 345-678 with the period from 2024-03-25 to 2024-03-31.
+                    - Booking number 234-567 with the period from 2024-03-21 to 2024-03-23.
+            -there is an overlap if a given customer has the following bookings:
+                    - Booking number 456-789 with the period from 2024-03-21 to 2024-03-31.
+                    - Booking number 567-890 with the period from 2024-03-22 to 2024-03-27.
+
+            Answer with the following information in a valid JSON document:
+            - the customer-name key set to {{name}}
+            - the customer-surname key set to {{surname}}
+            - the fraud-detected key set to 'true' or 'false'
+            - in case of fraud, the explanation of the fraud in the fraud-explanation key
+            - in case of fraud, the reservation ids that overlap.
+            You must respond in a valid JSON format.
+
+            You must not wrap JSON response in backticks, markdown, or in any other way, but return it as plain text.
+            """;
+        prompt = prompt.replaceAll("\\{\\{name\\}\\}", name);
+        prompt = prompt.replaceAll("\\{\\{surname\\}\\}", surname);
+        return PromptMessage.withUserRole(new TextContent(prompt));
     }
 }
