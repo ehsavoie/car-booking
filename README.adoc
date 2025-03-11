@@ -184,15 +184,6 @@ Of course, the LLM can't call the function on its own. This is the responsibilit
 
 Due to the non-deterministic nature of the LLM, functions calling must be used with care, especially for critical business logic: payment, cancelation ...
 
-To influence the behavior of the LLM, it is recommended to set the temperature and top priority in the configuration:
-[source,property]
-----
-# Set the model temperature for deterministic responses
-quarkus.langchain4j.azure-openai.chat-model.temperature=0.1
-# An alternative (or a complement?) to temperature: 0.1 means only top 10% probable tokens are considered
-quarkus.langchain4j.azure-openai.chat-model.top-p=0.1
-----
-
 For more information see
 https://community.openai.com/t/cheat-sheet-mastering-temperature-and-top-p-in-chatgpt-api/172683[Mastering Temperature and Top_p in ChatGPT API]
 
@@ -225,15 +216,3 @@ GPT-4 is more reliable and accurate but about 6 times slower.
 GPT-4o is even more reliable than GPT-4 and as fast as GPT-3-5-turbo. So clearly, it is technically the best option.
 
 Warning: pricing must also be considered when choosing a model in production. 
-
-## Next steps
-
-To be investigated:
-
-* Security: how to secure Function Callings
-* Testability: how to go beyond just "true or false"
-* Observability: how to monitor the LLM behavior/quality
-* Auditability
-* Parallel function calling
-* Production readiness
-* Quarkus native mode (currently not working)
